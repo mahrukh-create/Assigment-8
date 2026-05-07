@@ -2,12 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * * Simple global selector helper for choosing shapes with keys and placing
- * them
- * with mouse clicks.
- *
- * Press 1 = circle, 2 = square, 3 = triangle. Left-click to place the selected
- * shape.
+ * Controls how the user interacts with the app
  */
 public class ShapeSelector {
     private static String selected = "circle";
@@ -15,19 +10,48 @@ public class ShapeSelector {
     private static String color = "black";
     private static boolean creatingCustomShape = false;
 
+    /**
+     * ArrayList to hold all shapes drawn on the screen,
+     */
     private static ArrayList<TurtleDesigner> shapes = new ArrayList<>();
 
+    /**
+     * ArrayList to hold the points for the custom shape being created.
+     */
     private static ArrayList<Point> customShapePoints = new ArrayList<>();
+    /**
+     * ArrayList to hold the temporary CircleTool instances used to show the points
+     * of the custom shape being created.
+     */
     private static ArrayList<CircleTool> tempPoints = new ArrayList<>();
 
+    /**
+     * Variable to track whether the program is currently awaiting input for the
+     * menu.
+     */
     private static boolean awaitingInput = false;
 
+    /**
+     * Variable to track whether the user can undo or not.
+     */
     private static boolean canUndo = true;
 
+    /**
+     * Resets the undo variable to allow for another undo action.
+     */
     public static void reset() {
         canUndo = true;
     }
 
+    /**
+     * Handles mouse clicks to place the currently selected shape at the clicked
+     * canvas coordinates.
+     * If the user is currently creating a custom shape, it will add points to the
+     * custom shape instead of placing a shape.
+     * 
+     * @param canvasX
+     * @param canvasY
+     */
     public static void mousePressed(double canvasX, double canvasY) {
         if (creatingCustomShape) {
             customShapePoints.add(new Point(canvasX, canvasY));
@@ -48,6 +72,9 @@ public class ShapeSelector {
     public static void keyPressed(String keyText) {
         if (keyText == null)
             return;
+
+        // Switch statement to handle different key presses for shape selection, and
+        // other actions
         switch (keyText) {
             case "1":
                 if (awaitingInput) {
@@ -170,6 +197,11 @@ public class ShapeSelector {
         }
     }
 
+    /**
+     * Handles the choices for the menu options.
+     * 
+     * @param choice
+     */
     public static void getChoice(int choice) {
         switch (choice) {
             case 1:
@@ -201,9 +233,9 @@ public class ShapeSelector {
                 break;
             case 4:
                 // Clear everything from the screen and reset all variables
-                for(int i = shapes.size(); i > 0; i--) {
-                    shapes.get(i-1).clear();
-                    shapes.remove(i-1);
+                for (int i = shapes.size(); i > 0; i--) {
+                    shapes.get(i - 1).clear();
+                    shapes.remove(i - 1);
                 }
                 break;
             case 5:
@@ -247,6 +279,11 @@ public class ShapeSelector {
         }
     }
 
+    /**
+     * Prints the status of the shape selector to the console
+     * Changes whether the menu is open, whether the user is creating a custom
+     * shape, and the keybinds for the app.
+     */
     public static void getStatus() {
         if (awaitingInput) {
             System.out.println("Editing Menu: ");
