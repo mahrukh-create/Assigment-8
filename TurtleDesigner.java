@@ -7,7 +7,9 @@ public abstract class TurtleDesigner {
     private final double size;
     private final String color;
     private final double lineWidth;
-    private String selectedShape = "circle";
+    // private String selectedShape = "circle";
+
+    private Turtle turtle;
 
     /**
      * Constructs a new TurtleDesigner with the specified parameters.
@@ -19,6 +21,7 @@ public abstract class TurtleDesigner {
      */
     protected TurtleDesigner(double centerX, double centerY, double size, String color) {
         this(centerX, centerY, size, color, 3.0);
+        this.turtle = new Turtle();
     }
 
     /**
@@ -37,22 +40,8 @@ public abstract class TurtleDesigner {
         this.size = size;
         this.color = color;
         this.lineWidth = lineWidth;
-    }
-
-    /**
-     * Key listener method to handle key events. Subclasses can override this method to
-     * implement specific key handling behavior for their shapes. By default, this method 
-     * checks for the number keys (1, 2, 3) to change the shape from circle, square, or triangle. Subclasses can extend this
-     * 
-     */
-    public void handleKeyEvent(int keyCode) {
-        if (keyCode == '1') {
-            // Change to circle
-        } else if (keyCode == '2') {
-            // Change to square
-        } else if (keyCode == '3') {
-            // Change to triangle
-        }
+        this.turtle = new Turtle();
+        this.turtle.hide();
     }
 
     /**
@@ -61,16 +50,18 @@ public abstract class TurtleDesigner {
      * 
      * @return the Turtle instance used for drawing
      */
-    public final Turtle draw() {
-        Turtle turtle = new Turtle();
-        turtle.speed(0);
-        turtle.hide();
-        turtle.up();
-        turtle.setPosition(centerX, centerY);
-        turtle.penColor(color);
-        turtle.width(lineWidth);
-        drawShape(turtle);
-        return turtle;
+    public final void draw() {
+        this.turtle.speed(0);
+        this.turtle.hide();
+        this.turtle.up();
+        this.turtle.setPosition(centerX, centerY);
+        this.turtle.penColor(color);
+        this.turtle.width(lineWidth);
+        drawShape(this.turtle);
+    }
+
+    public void clear() {
+        this.turtle.clear();
     }
 
     /**
