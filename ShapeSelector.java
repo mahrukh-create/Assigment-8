@@ -372,4 +372,18 @@ public class ShapeSelector {
                 "Keybinds:\nr = red, b = blue, g = green\nc = open menu, u = undo last point\n1 = circle, 2 = square, 3 = triangle\nEquals (=) = increase size, Minus (-) = decrease size\nLeft-click to place shape, Enter to finalize custom shape, Escape to cancel custom shape\n");
 
     }
+
+    /**
+     * {@inheritDoc}
+     * @return a single line of text with all of the values of the shape selector
+     */
+    @Override
+    public String toString() {
+        return (
+            "Selected shape: " + selected
+            + ", Default size of shape: " + defaultSize
+            + ", Color of shape " + color
+        );
+    }
+
 }
