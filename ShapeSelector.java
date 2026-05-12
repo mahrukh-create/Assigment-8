@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -52,7 +53,7 @@ public class ShapeSelector {
      * @param canvasX
      * @param canvasY
      */
-    public static void mousePressed(double canvasX, double canvasY) {
+    public void mousePressed(double canvasX, double canvasY) {
         if (creatingCustomShape) {
             customShapePoints.add(new Point(canvasX, canvasY));
             tempPoints.add(new CircleTool(canvasX, canvasY, 5, color));
@@ -64,137 +65,194 @@ public class ShapeSelector {
     }
 
     /**
+     * Clears the console using ANSI escape codes.
+     */
+    public void clearConsole() {
+        // Clear the console using ANSI escape codes
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    // public void checkKeys(HashMap<String, Boolean> keysDown, HashMap<String,
+    // Boolean> keysUp) {
+    // // System.out.println(keysDown);
+    // if (keysDown == null || keysUp == null)
+    // return;
+    // if (keysDown.getOrDefault("1", false)) {
+    // if (awaitingInput) {
+    // this.clearConsole();
+    // getChoice(1);
+    // awaitingInput = false;
+    // return;
+    // }
+    // selected = "circle";
+    // clearConsole();
+    // System.out.println("ShapeSelector: selected circle");
+    // }
+    // }
+
+    /**
      * Handles key presses to change the selected shape. This method is called by
      * the Turtle class when keys are pressed.
      * 
      * @param keyText
      */
-    public static void keyPressed(String keyText) {
-        if (keyText == null)
+    public void checkKeys(HashMap<String, Boolean> keysDown, HashMap<String, Boolean> keysUp) {
+        if (keysDown == null || keysUp == null)
             return;
+
+        if (!keysDown.getOrDefault('u', false) && keysUp.getOrDefault('u', null != null)) {
+            reset();
+        }
 
         // Switch statement to handle different key presses for shape selection, and
         // other actions
-        switch (keyText) {
-            case "1":
-                if (awaitingInput) {
-                    getChoice(1);
-                    awaitingInput = false;
-                    return;
-                }
-                selected = "circle";
-                System.out.println("ShapeSelector: selected circle");
-                break;
-            case "2":
-                if (awaitingInput) {
-                    getChoice(2);
-                    awaitingInput = false;
-                    return;
-                }
-                selected = "square";
-                System.out.println("ShapeSelector: selected square");
-                break;
-            case "3":
-                if (awaitingInput) {
-                    getChoice(3);
-                    awaitingInput = false;
-                    return;
-                }
-                selected = "triangle";
-                System.out.println("ShapeSelector: selected triangle");
-                break;
-            case "4":
-                if (awaitingInput) {
-                    getChoice(4);
-                    awaitingInput = false;
-                    return;
-                }
-                break;
-            case "5":
-                if (awaitingInput) {
-                    getChoice(5);
-                    awaitingInput = false;
-                    return;
-                }
-                break;
-            case "r":
-                color = "red";
-                break;
-            case "b":
-                color = "blue";
-                break;
-            case "g":
-                color = "green";
-                break;
-            case "u":
-                if (creatingCustomShape && canUndo) {
-                    if (!customShapePoints.isEmpty()) {
-                        Point removedPoint = customShapePoints.remove(customShapePoints.size() - 1);
-                        System.out.println("Removed last point (" + removedPoint.getX() + ", " + removedPoint.getY()
-                                + ") from custom shape");
-                        tempPoints.get(tempPoints.size() - 1).clear();
-                        tempPoints.remove(tempPoints.size() - 1);
-                        canUndo = false;
-                    } else {
-                        System.out.println("No points to remove from custom shape");
-                    }
-                } else if (!shapes.isEmpty() && canUndo) {
-                    shapes.get(shapes.size() - 1).clear();
-                    shapes.remove(shapes.size() - 1);
+        if (keysDown.getOrDefault("1", false)) {
+
+            if (awaitingInput) {
+                this.clearConsole();
+                getChoice(1);
+                awaitingInput = false;
+                getStatus();
+                return;
+            }
+            selected = "circle";
+            clearConsole();
+            System.out.println("ShapeSelector: selected circle");
+            getStatus();
+        }
+        if (keysDown.getOrDefault("2", false)) {
+            if (awaitingInput) {
+                clearConsole();
+                getChoice(2);
+                awaitingInput = false;
+                getStatus();
+                return;
+            }
+            selected = "square";
+            clearConsole();
+            System.out.println("ShapeSelector: selected square");
+            getStatus();
+        }
+        if (keysDown.getOrDefault("3", false)) {
+            if (awaitingInput) {
+                clearConsole();
+                getChoice(3);
+                awaitingInput = false;
+                getStatus();
+                return;
+            }
+            selected = "triangle";
+            clearConsole();
+            System.out.println("ShapeSelector: selected triangle");
+            getStatus();
+        }
+        if (keysDown.getOrDefault("4", false)) {
+            if (awaitingInput) {
+                clearConsole();
+                getChoice(4);
+                awaitingInput = false;
+                return;
+            }
+
+        }
+        if (keysDown.getOrDefault("5", false)) {
+
+            if (awaitingInput) {
+                clearConsole();
+                getChoice(5);
+                awaitingInput = false;
+                return;
+            }
+        }
+        if (keysDown.getOrDefault("r", false)) {
+            color = "red";
+        }
+        if (keysDown.getOrDefault("b", false)) {
+            color = "blue";
+        }
+        if (keysDown.getOrDefault("g", false)) {
+            color = "green";
+        }
+        if (keysDown.getOrDefault("u", false)) {
+            if (creatingCustomShape && canUndo) {
+                if (!customShapePoints.isEmpty()) {
+                    Point removedPoint = customShapePoints.remove(customShapePoints.size() - 1);
+                    System.out.println("Removed last point (" + removedPoint.getX() + ", " + removedPoint.getY()
+                            + ") from custom shape");
+                    tempPoints.get(tempPoints.size() - 1).clear();
+                    tempPoints.remove(tempPoints.size() - 1);
                     canUndo = false;
+                } else {
+                    System.out.println("No points to remove from custom shape");
                 }
-                break;
+            } else if (!shapes.isEmpty() && canUndo) {
+                shapes.get(shapes.size() - 1).clear();
+                shapes.remove(shapes.size() - 1);
+                canUndo = false;
+            }
+        }
 
-            case "equals": // up arrow
-                defaultSize += 10;
-                if (defaultSize > 100) {
-                    defaultSize = 100;
-                }
-                System.out.println("ShapeSelector: increased size to " + defaultSize);
-                break;
-            case "minus": // down arrow
-                defaultSize -= 10;
-                if (defaultSize < 10) {
-                    defaultSize = 10;
-                }
-                System.out.println("ShapeSelector: decreased size to " + defaultSize);
-                break;
-            case "c": // up arrow
-                if (!awaitingInput) {
-                    System.out.println("Editing Menu: ");
-                    System.out.println("1. Change Size (10-100)");
-                    System.out.println("2. Change Color");
-                    System.out.println("3. Create custom shape");
-                }
-                awaitingInput = true;
+        if (keysDown.getOrDefault("equals", false)) {
+            defaultSize += 10;
+            if (defaultSize > 100) {
+                defaultSize = 100;
+            }
+            clearConsole();
+            System.out.println("ShapeSelector: increased size to " + defaultSize);
 
-                break;
-            case "enter":
-                if (creatingCustomShape) {
+        } // up arrow
+        if (keysDown.getOrDefault("minus", false)) {
+            defaultSize -= 10;
+            if (defaultSize < 10) {
+                defaultSize = 10;
+            }
+            clearConsole();
+            System.out.println("ShapeSelector: decreased size to " + defaultSize);
 
-                    if (customShapePoints.size() >= 2) {
-                        CustomShape customShape = new CustomShape(0, 0, 0, color, new ArrayList<>(customShapePoints));
-                        shapes.add(customShape);
-                        customShape.draw();
-                    } else {
-                        System.out.println("Custom shape requires at least 2 points. Shape creation cancelled.");
-                    }
+        } // down arrow
+        if (keysDown.getOrDefault("c", false)) {
+            clearConsole();
+            getStatus();
+            if (!awaitingInput) {
+                System.out.println("Editing Menu: ");
+                System.out.println("1. Change Size (10-100)");
+                System.out.println("2. Change Color");
+                System.out.println("3. Create custom shape");
+            } else if (awaitingInput) {
+                System.out.println("Awaiting input for editing...");
+                return;
+            }
+            awaitingInput = true;
 
-                    creatingCustomShape = false;
-                    customShapePoints.clear();
-                    for (int i = tempPoints.size(); i > 0; i--) {
-                        tempPoints.get(i - 1).clear();
-                        tempPoints.remove(i - 1);
-                    }
+        } // up arrow
+        if (keysDown.getOrDefault("enter", false)) {
+            if (creatingCustomShape) {
+
+                if (customShapePoints.size() >= 2) {
+                    CustomShape customShape = new CustomShape(0, 0, 0, color, new ArrayList<>(customShapePoints));
+                    shapes.add(customShape);
+                    customShape.draw();
+                } else {
+                    System.out.println("Custom shape requires at least 2 points. Shape creation cancelled.");
                 }
-                break;
-            case "escape":
+
                 creatingCustomShape = false;
                 customShapePoints.clear();
-                break;
-            default:
-                break;
+                for (int i = tempPoints.size(); i > 0; i--) {
+                    tempPoints.get(i - 1).clear();
+                    tempPoints.remove(i - 1);
+                }
+            }
+
+            clearConsole();
+            getStatus();
         }
+        if (keysDown.getOrDefault("escape", false)) {
+            creatingCustomShape = false;
+            customShapePoints.clear();
+        }
+
     }
 
     /**
@@ -202,7 +260,7 @@ public class ShapeSelector {
      * 
      * @param choice
      */
-    public static void getChoice(int choice) {
+    public void getChoice(int choice) {
         switch (choice) {
             case 1:
                 Scanner sc = new Scanner(System.in);
@@ -210,26 +268,37 @@ public class ShapeSelector {
                 double newSize = sc.nextDouble();
                 if (newSize >= 10 && newSize <= 100) {
                     defaultSize = newSize;
+                    this.clearConsole();
                     System.out.println("Size changed to: " + defaultSize);
+                    getStatus();
                 } else {
+                    this.clearConsole();
                     System.out.println("Invalid size. Please enter a value between 10 and 100.");
+                    getChoice(choice);
                 }
                 break;
             case 2:
                 Scanner sc2 = new Scanner(System.in);
+                this.clearConsole();
                 System.out.println("Current color: " + color);
                 System.out.println("Available colors: red, blue, green");
                 System.out.print("Enter new color: ");
                 String newColor = sc2.nextLine();
                 if ("red".equals(newColor) || "blue".equals(newColor) || "green".equals(newColor)) {
                     color = newColor;
+                    clearConsole();
                     System.out.println("Color changed to: " + color);
+                    getStatus();
                 } else {
+                    clearConsole();
                     System.out.println("Invalid color. Please enter a valid color.");
+                    getChoice(choice);
                 }
                 break;
             case 3:
+                clearConsole();
                 creatingCustomShape = true;
+                getStatus();
                 break;
             case 4:
                 // Clear everything from the screen and reset all variables
@@ -284,7 +353,7 @@ public class ShapeSelector {
      * Changes whether the menu is open, whether the user is creating a custom
      * shape, and the keybinds for the app.
      */
-    public static void getStatus() {
+    public void getStatus() {
         if (awaitingInput) {
             System.out.println("Editing Menu: ");
             System.out.println("1. Change Size (10-100)");

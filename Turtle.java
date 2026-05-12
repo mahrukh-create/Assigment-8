@@ -2456,7 +2456,9 @@ public final class Turtle implements Runnable, ActionListener, MouseListener, Mo
      * @return a list of pressed keys
      */
     public static String[] keysDown() {
-        return keysDown.toArray(new String[] {});
+        synchronized (keyLock) {
+            return keysDown.toArray(new String[] {});
+        }
     }
 
     /**
@@ -2466,7 +2468,9 @@ public final class Turtle implements Runnable, ActionListener, MouseListener, Mo
      * @return true if the key is pressed
      */
     public static boolean isKeyDown(String key) {
-        return keysDown.contains(key);
+        synchronized (keyLock) {
+            return keysDown.contains(key);
+        }
     }
 
     /**
