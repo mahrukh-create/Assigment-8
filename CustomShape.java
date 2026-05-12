@@ -32,6 +32,17 @@ public class CustomShape extends TurtleDesigner {
     }
 
     /**
+     * {@inheritDoc}
+     * @return a single line of text with all of the values of the array defining the custom shape
+     */
+
+    public String toString() {
+        return (
+            "Array of points: " + points
+        );
+    }
+
+    /**
      * Draws the custom shape by going to each point in the array by moing 
      * the turtle to the first point, then putting the pen down and
      * moving to each subsequent point in the array. 
