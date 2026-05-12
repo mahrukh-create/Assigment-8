@@ -34,4 +34,15 @@ public class Point {
     public double getY() {
         return y;
     }
+
+    /**
+     * {@inheritDoc}
+     * @return a single line of text with all of the values of the point
+     */
+    public String toString() {
+        return (
+            "X-coordinate of the point: " + x
+            + ", Y-coordinate of the point: " + y
+        );
+    }
 }
