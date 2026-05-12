@@ -118,6 +118,21 @@ public abstract class TurtleDesigner {
     }
 
     /**
+     * {@inheritDoc}
+     * @return a single line of text with all of the values of the shape
+     */
+    @Override
+    public String toString() {
+        return (
+            "X-coordinate of the center: " + centerX
+            + ", Y-coordinate of the center: " + centerY
+            + ", Shape size: " + size
+            + ", Shape color: " + color
+            + ", Line width: " + lineWidth
+        );
+    }
+
+    /**
      * Utility method to position the turtle at a specific location and direction
      * before
      * drawing. This method lifts the pen, moves the turtle to the specified
