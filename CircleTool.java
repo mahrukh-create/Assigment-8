@@ -89,11 +89,6 @@ public class CircleTool extends TurtleDesigner {
         }
     }
 
-    public static void main(String[] args) {
-        CircleTool circle = new CircleTool(10, 10, 50, "black", "blue");
-        Turtle turtle = new Turtle();
-        circle.drawShape(turtle);
-    }
 
 }
 
