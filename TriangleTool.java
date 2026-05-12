@@ -49,9 +49,4 @@
     }
     }
 
-    public static void main(String[] args) {
-        TriangleTool tri = new TriangleTool(150,150,200,"blue");
-        tri.draw();
-        
-    }
     }
