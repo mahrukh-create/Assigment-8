@@ -101,7 +101,7 @@ public class ShapeSelector {
         if (keysDown == null || keysUp == null)
             return;
 
-        if (!keysDown.getOrDefault('u', false) && keysUp.getOrDefault('u', null != null)) {
+        if (keysUp.getOrDefault("u", false)) {
             reset();
         }
 

@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Arrays;
 
 public class App {
     public static boolean contains(String[] arr, String key) {
@@ -40,6 +42,8 @@ public class App {
         // varaible which tracks if the mouse was down in the previous iteration of the
         // loop
         boolean mouseWasDown = false;
+        // Set to track which keys were down in the previous iteration
+        HashSet<String> keysWereDown = new HashSet<>();
 
         shapeSelector.clearConsole();
         shapeSelector.getStatus();
@@ -53,14 +57,17 @@ public class App {
             keysDown.clear();
             keysUp.clear();
 
-            // looping over the kes in the arraylist fom turtle
-            // sending each pressed key to the shape selector to handle
+            // Build a set of currently pressed keys and only process newly-pressed ones
+            HashSet<String> currentKeys = new HashSet<>();
             for (String key : keys) {
-                keysDown.put(key, true);
-                System.out.println(key);
+                currentKeys.add(key);
             }
-            
-            
+            for (String key : currentKeys) {
+                if (!keysWereDown.contains(key)) {
+                    keysDown.put(key, true);
+                }
+            }
+
             keysUp = checkKeyUp(keys);
 
             shapeSelector.checkKeys(keysDown, keysUp);
@@ -72,6 +79,9 @@ public class App {
                 shapeSelector.mousePressed(Turtle.canvasX(Turtle.mouseX()), Turtle.canvasY(Turtle.mouseY()));
             }
             mouseWasDown = mouseDown;
+            // Update keysWereDown for the next iteration
+            keysWereDown.clear();
+            keysWereDown.addAll(Arrays.asList(keys));
         }
     }
 }
