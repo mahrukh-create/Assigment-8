@@ -77,7 +77,7 @@ public abstract class TurtleDesigner {
      * 
      * @return the x-coordinate of the center
      */
-    protected final double getCenterX() {
+    protected final double getX() {
         return centerX;
     }
 
@@ -86,7 +86,7 @@ public abstract class TurtleDesigner {
      * 
      * @return the y-coordinate of the center
      */
-    protected final double getCenterY() {
+    protected final double getY() {
         return centerY;
     }
 
