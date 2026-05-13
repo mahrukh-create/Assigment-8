@@ -38,7 +38,7 @@ public class CustomShape extends TurtleDesigner {
 
     public String toString() {
         return (
-            "Array of points: " + points
+            "Array of points: " + getPoints().toString()
         );
     }
 
@@ -50,6 +50,8 @@ public class CustomShape extends TurtleDesigner {
      */
     @Override
     protected void drawShape(Turtle turtle) {
+        ArrayList<Point> points = getPoints();
+        
         if (points.size() < 2) {
             System.out.println("Custom shape requires at least 2 points");
             return;
