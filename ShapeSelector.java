@@ -58,6 +58,8 @@ public class ShapeSelector {
             customShapePoints.add(new Point(canvasX, canvasY));
             tempPoints.add(new CircleTool(canvasX, canvasY, 5, color));
             tempPoints.get(tempPoints.size() - 1).draw();
+            clearConsole();
+            getStatus();
             System.out.println("Added point (" + canvasX + ", " + canvasY + ") to custom shape");
         } else {
             placeAtCanvas(canvasX, canvasY);
@@ -68,28 +70,10 @@ public class ShapeSelector {
      * Clears the console using ANSI escape codes.
      */
     public void clearConsole() {
-        // Clear the console using ANSI escape codes
-        System.out.print("\033[H\033[2J");
+
+        System.out.print("\033[2J\033[H");
         System.out.flush();
     }
-
-    // public void checkKeys(HashMap<String, Boolean> keysDown, HashMap<String,
-    // Boolean> keysUp) {
-    // // System.out.println(keysDown);
-    // if (keysDown == null || keysUp == null)
-    // return;
-    // if (keysDown.getOrDefault("1", false)) {
-    // if (awaitingInput) {
-    // this.clearConsole();
-    // getChoice(1);
-    // awaitingInput = false;
-    // return;
-    // }
-    // selected = "circle";
-    // clearConsole();
-    // System.out.println("ShapeSelector: selected circle");
-    // }
-    // }
 
     /**
      * Handles key presses to change the selected shape. This method is called by
@@ -108,9 +92,10 @@ public class ShapeSelector {
         // Switch statement to handle different key presses for shape selection, and
         // other actions
         if (keysDown.getOrDefault("1", false)) {
-
+            if (creatingCustomShape)
+                return;
             if (awaitingInput) {
-                this.clearConsole();
+                clearConsole();
                 getChoice(1);
                 awaitingInput = false;
                 getStatus();
@@ -118,10 +103,11 @@ public class ShapeSelector {
             }
             selected = "circle";
             clearConsole();
-            System.out.println("ShapeSelector: selected circle");
             getStatus();
         }
         if (keysDown.getOrDefault("2", false)) {
+            if (creatingCustomShape)
+                return;
             if (awaitingInput) {
                 clearConsole();
                 getChoice(2);
@@ -131,23 +117,24 @@ public class ShapeSelector {
             }
             selected = "square";
             clearConsole();
-            System.out.println("ShapeSelector: selected square");
             getStatus();
         }
         if (keysDown.getOrDefault("3", false)) {
+            if (creatingCustomShape)
+                return;
             if (awaitingInput) {
                 clearConsole();
-                getChoice(3);
                 awaitingInput = false;
-                getStatus();
+                getChoice(3);
                 return;
             }
             selected = "triangle";
             clearConsole();
-            System.out.println("ShapeSelector: selected triangle");
             getStatus();
         }
         if (keysDown.getOrDefault("4", false)) {
+            if (creatingCustomShape)
+                return;
             if (awaitingInput) {
                 clearConsole();
                 getChoice(4);
@@ -212,19 +199,18 @@ public class ShapeSelector {
 
         } // down arrow
         if (keysDown.getOrDefault("c", false)) {
-            clearConsole();
-            getStatus();
             if (!awaitingInput) {
+                clearConsole();
                 System.out.println("Editing Menu: ");
                 System.out.println("1. Change Size (10-100)");
                 System.out.println("2. Change Color");
                 System.out.println("3. Create custom shape");
-            } else if (awaitingInput) {
                 System.out.println("Awaiting input for editing...");
+                awaitingInput = true;
                 return;
             }
-            awaitingInput = true;
 
+            System.out.println("Awaiting input for editing...");
         } // up arrow
         if (keysDown.getOrDefault("enter", false)) {
             if (creatingCustomShape) {
@@ -233,6 +219,7 @@ public class ShapeSelector {
                     CustomShape customShape = new CustomShape(0, 0, 0, color, new ArrayList<>(customShapePoints));
                     shapes.add(customShape);
                     customShape.draw();
+                    System.out.println(customShape);
                 } else {
                     System.out.println("Custom shape requires at least 2 points. Shape creation cancelled.");
                 }
@@ -268,18 +255,18 @@ public class ShapeSelector {
                 double newSize = sc.nextDouble();
                 if (newSize >= 10 && newSize <= 100) {
                     defaultSize = newSize;
-                    this.clearConsole();
+                    clearConsole();
                     System.out.println("Size changed to: " + defaultSize);
                     getStatus();
                 } else {
-                    this.clearConsole();
+                    clearConsole();
                     System.out.println("Invalid size. Please enter a value between 10 and 100.");
                     getChoice(choice);
                 }
                 break;
             case 2:
                 Scanner sc2 = new Scanner(System.in);
-                this.clearConsole();
+                clearConsole();
                 System.out.println("Current color: " + color);
                 System.out.println("Available colors: red, blue, green");
                 System.out.print("Enter new color: ");
@@ -375,15 +362,12 @@ public class ShapeSelector {
 
     /**
      * {@inheritDoc}
+     * 
      * @return a single line of text with all of the values of the shape selector
      */
     @Override
     public String toString() {
-        return (
-            "Selected shape: " + selected
-            + ", Default size of shape: " + defaultSize
-            + ", Color of shape " + color
-        );
+        return ("Selected shape: " + selected + ", Size: " + defaultSize + ", Color: " + color);
     }
 
 }
