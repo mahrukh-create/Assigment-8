@@ -31,7 +31,7 @@ public class TriangleTool extends TurtleDesigner {
 
         double height = sideLength * Math.sqrt(3.0) / 2.0;
 
-        placeTurtle(turtle, getCenterX() - (sideLength / 2.0), getCenterY() - (height / 3.0), 0);
+        placeTurtle(turtle, getX() - (sideLength / 2.0), getY() - (height / 3.0), 0);
 
         for (int i = 0; i < 3; i++) {
             turtle.forward(sideLength);
