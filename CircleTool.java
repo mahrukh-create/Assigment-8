@@ -1,5 +1,6 @@
 /**
- * Draws a circle
+ * Represents a circle drawing tool that extends TurtleDesigner
+ * Draws an circle using Turtle graphics
  * 
  * @author Amy Mathew
  */
