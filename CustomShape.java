@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * The CustomShape class represents a user-defined shape created by selecting points on the canvas.
+ */
 public class CustomShape extends TurtleDesigner {
 
     /**
@@ -11,11 +14,11 @@ public class CustomShape extends TurtleDesigner {
      * Constructor for the CustomShape class, which takes in the center coordinates,
      * size, color, and list of points that define the shape.
      * 
-     * @param centerX
-     * @param centerY
-     * @param size
-     * @param color
-     * @param points
+     * @param centerX the x-coordinate of the shape's center
+     * @param centerY the y-coordinate of the shape's center
+     * @param size the size of the shape
+     * @param color the color of the shape
+     * @param points the list of points that define the shape
      */
     public CustomShape(double centerX, double centerY, double size, String color, ArrayList<Point> points) {
         super(centerX, centerY, size, color);

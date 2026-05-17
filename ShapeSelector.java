@@ -76,6 +76,13 @@ public class ShapeSelector {
     private static boolean canUndo = true;
 
     /**
+     * Base contructor for ShapeSelector
+     */
+    public ShapeSelector() {
+        getStatus();
+    }
+
+    /**
      * Resets the undo variable to allow for another undo action.
      */
     public static void reset() {

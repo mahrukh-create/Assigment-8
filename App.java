@@ -1,3 +1,4 @@
+import java.util.HashMap;
 
 /**
  * The entry point for this app. Initializes the ShapeSelector and TurtleController, and contains the 
@@ -6,16 +7,15 @@
  * @author Joseph Jazwinski
  */
 
-import java.util.HashMap;
 
 public class App {
     /**
      * Helper method to check if an array contains a specific key. Used for checking
      * which keys are currently pressed.
      * 
-     * @param arr
-     * @param key
-     * @return
+     * @param arr the array to check
+     * @param key the key to look for
+     * @return true if the array contains the key, false otherwise
      */
     public static boolean contains(String[] arr, String key) {
         for (String s : arr) {
@@ -27,11 +27,12 @@ public class App {
     }
 
     /**
-     * Helper method to check which keys are currently not pressed. Used for checking
+     * Helper method to check which keys are currently not pressed. Used for
+     * checking
      * which keys were released in the current iteration of the main loop.
      * 
-     * @param keys
-     * @return
+     * @param keys the array of currently pressed keys
+     * @return a HashMap mapping each key to a boolean indicating whether it is currently
      */
     public static HashMap<String, Boolean> checkKeyUp(String[] keys) {
         String keysStr = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ0-=[]\\;',./`~!@#$%^&*()_+{}|:\"<>?";
@@ -49,6 +50,12 @@ public class App {
         return keysUp;
     }
 
+    /**
+     * The main method initializes the ShapeSelector and TurtleController, and
+     * contains the main loop which checks for user inputs
+     * 
+     * @param args the command-line arguments (not used in this app)
+     */
     public static void main(String[] args) {
         ShapeSelector shapeSelector = new ShapeSelector();
 
@@ -68,7 +75,7 @@ public class App {
 
         shapeSelector.clearConsole();
         shapeSelector.getStatus();
-        
+
         // main loop which iterates every 50 milliseconds to check for
         // key presses and mouse clicks, and updates the shape
         // selector accordingly

@@ -25,7 +25,6 @@ public abstract class TurtleDesigner {
      * @param centerY   the y-coordinate of the center of the shape
      * @param size      the size of the shape
      * @param color     the color of the shape
-     * @param lineWidth the width of the lines used to draw the shape
      */
     protected TurtleDesigner(double centerX, double centerY, double size, String color) {
         this.centerX = centerX;
@@ -40,7 +39,6 @@ public abstract class TurtleDesigner {
      * Draws the shape using the turtle library and returns the Turtle instance used
      * for drawing.
      * 
-     * @return the Turtle instance used for drawing
      */
     public final void draw() {
         this.turtle.speed(0);
@@ -51,6 +49,9 @@ public abstract class TurtleDesigner {
         drawShape(this.turtle);
     }
 
+    /**
+     * Clears the drawing of this shape from the canvas
+     */
     public void clear() {
         this.turtle.clear();
     }
@@ -84,7 +85,7 @@ public abstract class TurtleDesigner {
     /**
      * Gets the size of the shape.
      * 
-     * @return
+     * @return the size of the shape
      */
     protected final double getSize() {
         return size;
@@ -120,10 +121,10 @@ public abstract class TurtleDesigner {
      * coordinates,
      * sets the direction, and then lowers the pen to prepare for drawing.
      * 
-     * @param turtle
-     * @param x
-     * @param y
-     * @param direction
+     * @param turtle the Turtle instance to be positioned
+     * @param x the x-coordinate to move the turtle to
+     * @param y the y-coordinate to move the turtle to
+     * @param direction the direction to set the turtle to
      */
     protected final void placeTurtle(Turtle turtle, double x, double y, double direction) {
         turtle.up();
@@ -136,8 +137,8 @@ public abstract class TurtleDesigner {
      * calculates the number of steps needed to create a smooth circle based on the
      * radius, and then moves the turtle in small increments to approximate the
      * 
-     * @param turtle
-     * @param radius
+     * @param turtle the Turtle instance to use for drawing the circle
+     * @param radius the radius of the circle to be drawn
      */
     protected final void drawCircle(Turtle turtle, double radius) {
         int steps = Math.max(60, (int) Math.ceil(radius * 8));

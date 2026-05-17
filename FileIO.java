@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+/**
+ * The FileIO class provides methods for saving and loading creations in the app.
+ */
 public class FileIO {
     private String cwd;
 
@@ -19,7 +22,7 @@ public class FileIO {
     /**
      * Creates FileIO Object with the specified cwd
      * 
-     * @param cwd
+     * @param cwd the working directory to be set
      */
     public FileIO(String cwd) {
         this.cwd = cwd;
@@ -28,7 +31,7 @@ public class FileIO {
     /**
      * Updates the current working directory to the specified path
      * 
-     * @param newCWD
+     * @param newCWD the new working directory to be set
      */
     public void updateCWD(String newCWD) {
         this.cwd = newCWD;
@@ -39,7 +42,7 @@ public class FileIO {
      * 
      * @param name the name of the creation to be saved (should not include
      *             extension)
-     * @return
+     * @param shapes the list of shapes to be saved as part of this creation
      */
     public void saveCreation(String name, ArrayList<TurtleDesigner> shapes) {
         System.out.println("Saving creation '" + name + "'...");
@@ -61,7 +64,7 @@ public class FileIO {
      * Loads a creation from a file and updates the app state accordingly
      * 
      * @param path the path to the creation to be loaded
-     * @return
+     * @return the list of shapes represented by the loaded creation, or an empty list if an error occurred
      */
     public ArrayList<TurtleDesigner> loadCreation(String path) {
         ArrayList<TurtleDesigner> shapes = new ArrayList<>();
