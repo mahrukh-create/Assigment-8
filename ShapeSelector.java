@@ -1,3 +1,14 @@
+
+/**
+ * The ShapeSelector class is the controller for the app where it handles user inputs
+ * to change the selected shape, size, and color, as well as to place shapes on the
+ * canvas. It also manages the menu system for editing shape properties and saving/loading
+ * creations. The ShapeSelector interacts with the TurtleDesigner subclasses to draw shapes
+ * and with the FileIO class to manage saved creations.
+ *
+ * @author Joseph Jazwinski
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -468,7 +479,8 @@ public class ShapeSelector {
                 System.out.println("Creation '" + fileToLoad + "' loaded successfully.");
                 return;
             case 3:
-                String fileToDelete = pickCreation(fileIO.getSavedCreations(), "Enter the number of the creation you want to delete: ");
+                String fileToDelete = pickCreation(fileIO.getSavedCreations(),
+                        "Enter the number of the creation you want to delete: ");
                 if (fileToDelete == null) {
                     closeMenus();
                     return;

@@ -121,6 +121,11 @@ public class FileIO {
         return new File(cwd, path).getPath();
     }
 
+    /**
+     * Extracts the shape type from a segment of the creation file line
+     * @param segment
+     * @return
+     */
     private String extractShapeType(String segment) {
         int colonIndex = segment.indexOf(':');
         if (colonIndex < 0) {
@@ -129,6 +134,12 @@ public class FileIO {
         return segment.substring(0, colonIndex).trim();
     }
 
+    /**
+     * Extracts the numeric value from a segment of the creation file line
+     * 
+     * @param segment
+     * @return
+     */
     private double extractValue(String segment) {
         int colonIndex = segment.lastIndexOf(':');
         if (colonIndex < 0 || colonIndex == segment.length() - 1) {
@@ -137,6 +148,12 @@ public class FileIO {
         return Double.parseDouble(segment.substring(colonIndex + 1).trim());
     }
 
+    /**
+     * Extracts the text value from a segment of the creation file line
+     * 
+     * @param segment
+     * @return
+     */
     private String extractTextValue(String segment) {
         int colonIndex = segment.lastIndexOf(':');
         if (colonIndex < 0 || colonIndex == segment.length() - 1) {

@@ -1,6 +1,22 @@
+
+/**
+ * The entry point for this app. Initializes the ShapeSelector and TurtleController, and contains the 
+ * main loop which checks for user inputs and updates the app state accordingly.
+ * 
+ * @author Joseph Jazwinski
+ */
+
 import java.util.HashMap;
 
 public class App {
+    /**
+     * Helper method to check if an array contains a specific key. Used for checking
+     * which keys are currently pressed.
+     * 
+     * @param arr
+     * @param key
+     * @return
+     */
     public static boolean contains(String[] arr, String key) {
         for (String s : arr) {
             if (s.equals(key)) {
@@ -10,6 +26,13 @@ public class App {
         return false;
     }
 
+    /**
+     * Helper method to check which keys are currently not pressed. Used for checking
+     * which keys were released in the current iteration of the main loop.
+     * 
+     * @param keys
+     * @return
+     */
     public static HashMap<String, Boolean> checkKeyUp(String[] keys) {
         String keysStr = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ0-=[]\\;',./`~!@#$%^&*()_+{}|:\"<>?";
 
@@ -45,6 +68,7 @@ public class App {
 
         shapeSelector.clearConsole();
         shapeSelector.getStatus();
+        
         // main loop which iterates every 50 milliseconds to check for
         // key presses and mouse clicks, and updates the shape
         // selector accordingly

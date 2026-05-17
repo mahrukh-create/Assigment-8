@@ -1,4 +1,11 @@
 /**
+ * The TurtleDesigner class is an abstract base class for creating 
+ * various turtle shape tools in the app.
+ *
+ * @author Joseph Jazwinski
+ */
+
+/**
  * Shared base class for turtle shape tools.
  */
 public abstract class TurtleDesigner {
