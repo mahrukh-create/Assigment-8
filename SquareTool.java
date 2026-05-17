@@ -36,7 +36,8 @@ public class SquareTool extends TurtleDesigner {
 
     /**
      * Compares the current SquareTool to another SquareTool object to
-     * determine whether they are equal. An equality can be achieved by having identical
+     * determine whether they are equal. An equality can be achieved by having
+     * identical
      * size, center coordinates, colors, and fill colors.
      * 
      * @param obj the object being compared to this SquareTool object.
@@ -55,7 +56,6 @@ public class SquareTool extends TurtleDesigner {
         if (obj instanceof SquareTool) {
             SquareTool otherSquare = (SquareTool) obj;
 
-
             return getX() == (otherSquare.getX()) && getY() == (otherSquare.getY())
                     && getSize() == otherSquare.getSize() && getColor().equals(otherSquare.getColor());
         }
@@ -70,9 +70,11 @@ public class SquareTool extends TurtleDesigner {
      */
     @Override
     public String toString() {
-        return "The square is placed at: " + getX() + ", " + getY() + "." + " The size is: "
-                + getSize()
-                + "." + " The outline color is: " + getColor() + ". ";
+        return ("Square: " +
+                "X-coordinate: " + getX()
+                + ", Y-coordinate: " + getY()
+                + ", Shape size: " + getSize()
+                + ", Shape color: " + getColor());
     }
 
 }

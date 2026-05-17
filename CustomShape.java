@@ -25,7 +25,7 @@ public class CustomShape extends TurtleDesigner {
     /**
      * Returns the list of points that define the custom shape.
      * 
-     * @return
+     * @return the points that define this custom shape
      */
     public ArrayList<Point> getPoints() {
         return this.points;
@@ -33,13 +33,12 @@ public class CustomShape extends TurtleDesigner {
 
     /**
      * {@inheritDoc}
+     *
      * @return a single line of text with all of the values of the array defining the custom shape
      */
-
+    @Override
     public String toString() {
-        return (
-            "Array of points: " + getPoints().toString()
-        );
+        return "Array of points: " + getPoints().toString();
     }
 
     /**

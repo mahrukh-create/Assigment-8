@@ -1,6 +1,4 @@
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Arrays;
 
 public class App {
     public static boolean contains(String[] arr, String key) {
@@ -43,7 +41,7 @@ public class App {
         // loop
         boolean mouseWasDown = false;
         // Set to track which keys were down in the previous iteration
-        HashSet<String> keysWereDown = new HashSet<>();
+        HashMap<String, Boolean> keysWereDown = new HashMap<>();
 
         shapeSelector.clearConsole();
         shapeSelector.getStatus();
@@ -57,13 +55,13 @@ public class App {
             keysDown.clear();
             keysUp.clear();
 
-            // Build a set of currently pressed keys and only process newly-pressed ones
-            HashSet<String> currentKeys = new HashSet<>();
+            // Build a map of currently pressed keys and only process newly-pressed ones
+            HashMap<String, Boolean> currentKeys = new HashMap<>();
             for (String key : keys) {
-                currentKeys.add(key);
+                currentKeys.put(key, true);
             }
-            for (String key : currentKeys) {
-                if (!keysWereDown.contains(key)) {
+            for (String key : currentKeys.keySet()) {
+                if (!keysWereDown.containsKey(key)) {
                     keysDown.put(key, true);
                 }
             }
@@ -81,7 +79,9 @@ public class App {
             mouseWasDown = mouseDown;
             // Update keysWereDown for the next iteration
             keysWereDown.clear();
-            keysWereDown.addAll(Arrays.asList(keys));
+            for (String key : keys) {
+                keysWereDown.put(key, true);
+            }
         }
     }
 }

@@ -6,23 +6,9 @@ public abstract class TurtleDesigner {
     private final double centerY;
     private final double size;
     private final String color;
-    private final double lineWidth;
     // private String selectedShape = "circle";
 
     private Turtle turtle;
-
-    /**
-     * Constructs a new TurtleDesigner with the specified parameters.
-     *
-     * @param centerX the x-coordinate of the center of the shape
-     * @param centerY the y-coordinate of the center of the shape
-     * @param size    the size of the shape
-     * @param color   the color of the shape
-     */
-    protected TurtleDesigner(double centerX, double centerY, double size, String color) {
-        this(centerX, centerY, size, color, 3.0);
-        this.turtle = new Turtle();
-    }
 
     /**
      * Constructs a new TurtleDesigner with the specified parameters, including line
@@ -34,12 +20,11 @@ public abstract class TurtleDesigner {
      * @param color     the color of the shape
      * @param lineWidth the width of the lines used to draw the shape
      */
-    protected TurtleDesigner(double centerX, double centerY, double size, String color, double lineWidth) {
+    protected TurtleDesigner(double centerX, double centerY, double size, String color) {
         this.centerX = centerX;
         this.centerY = centerY;
         this.size = size;
         this.color = color;
-        this.lineWidth = lineWidth;
         this.turtle = new Turtle();
         this.turtle.hide();
     }
@@ -56,7 +41,6 @@ public abstract class TurtleDesigner {
         this.turtle.up();
         this.turtle.setPosition(centerX, centerY);
         this.turtle.penColor(color);
-        this.turtle.width(lineWidth);
         drawShape(this.turtle);
     }
 
@@ -109,27 +93,17 @@ public abstract class TurtleDesigner {
     }
 
     /**
-     * Gets the line width used for drawing the shape.
-     * 
-     * @return the line width
-     */
-    protected final double getLineWidth() {
-        return lineWidth;
-    }
-
-    /**
      * {@inheritDoc}
+     * 
      * @return a single line of text with all of the values of the shape
      */
     @Override
     public String toString() {
-        return (
-            "X-coordinate of the center: " + centerX
-            + ", Y-coordinate of the center: " + centerY
-            + ", Shape size: " + size
-            + ", Shape color: " + color
-            + ", Line width: " + lineWidth
-        );
+        return ("Shape: " +
+                "X-coordinate: " + getX()
+                + ", Y-coordinate: " + getY()
+                + ", Shape size: " + getSize()
+                + ", Shape color: " + getColor());
     }
 
     /**

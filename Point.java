@@ -12,8 +12,8 @@ public class Point {
      * Constructor for the Point class, which takes in the x and y coordinates of
      * the point.
      * 
-     * @param x
-     * @param y
+     * @param x the x coordinate
+     * @param y the y coordinate
      */
     public Point(double x, double y) {
         this.x = x;
@@ -21,14 +21,17 @@ public class Point {
     }
 
     /**
-     * Getter methods for the x and y coordinates of the point.
+     * Gets the x coordinate of the point.
+     *
      * @return the x coordinate of the point
      */
     public double getX() {
         return x;
     }
+
     /**
-     * Getter method for the y coordinate of the point.
+     * Gets the y coordinate of the point.
+     *
      * @return the y coordinate of the point
      */
     public double getY() {
@@ -37,12 +40,11 @@ public class Point {
 
     /**
      * {@inheritDoc}
+     *
      * @return a single line of text with all of the values of the point
      */
+    @Override
     public String toString() {
-        return (
-            "X-coordinate of the point: " + x
-            + ", Y-coordinate of the point: " + y
-        );
+        return "X-coordinate of the point: " + x + ", Y-coordinate of the point: " + y;
     }
 }

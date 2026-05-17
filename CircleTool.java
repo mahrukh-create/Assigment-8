@@ -45,11 +45,11 @@ public class CircleTool extends TurtleDesigner {
      */
     @Override
     public String toString() {
-        return ("X-coordinate: " + getX()
+        return ("Circle: " +
+                "X-coordinate: " + getX()
                 + ", Y-coordinate: " + getY()
                 + ", Shape size: " + getSize()
-                + ", Shape color: " + getColor()
-                + ", Line width: " + getLineWidth());
+                + ", Shape color: " + getColor());
     }
 
     /**

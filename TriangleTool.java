@@ -39,4 +39,18 @@ public class TriangleTool extends TurtleDesigner {
         }
     }
 
+    /**
+     * Returns a string consisting of a description of this SquareTool object.
+     * 
+     * @return a string containing the square's center, size, color of outline and
+     *         fill color.
+     */
+    @Override
+    public String toString() {
+        return ("Triangle: " +
+                "X-coordinate: " + getX()
+                + ", Y-coordinate: " + getY()
+                + ", Shape size: " + getSize()
+                + ", Shape color: " + getColor());
+    }
 }
