@@ -74,6 +74,14 @@ public class FileIO {
                     return;
                 }
 
+                if (trimmedLine.startsWith("Custom:")) {
+                    CustomShape customShape = loadCustomShape(trimmedLine);
+                    if (customShape != null) {
+                        shapes.add(customShape);
+                    }
+                    return;
+                }
+
                 String[] parts = trimmedLine.split(",");
                 if (parts.length < 4) {
                     return;
@@ -105,6 +113,71 @@ public class FileIO {
         }
 
         return shapes;
+    }
+
+    /**
+     * Loads a custom shape from a serialized line.
+     *
+     * @param line the saved custom-shape line
+     * @return the reconstructed custom shape, or null if the line is invalid
+     */
+    private CustomShape loadCustomShape(String line) {
+        int colorMarker = line.indexOf("Shape color: ");
+        int pointsMarker = line.indexOf(", Points: ");
+        if (colorMarker < 0 || pointsMarker < 0 || pointsMarker <= colorMarker) {
+            System.out.println("Unknown custom shape format: " + line);
+            return null;
+        }
+
+        String color = line.substring(colorMarker + "Shape color: ".length(), pointsMarker).trim();
+        String pointData = line.substring(pointsMarker + ", Points: ".length()).trim();
+        ArrayList<Point> points = parseCustomPoints(pointData);
+
+        if (points.size() < 2) {
+            System.out.println("Custom shape requires at least 2 points: " + line);
+            return null;
+        }
+
+        return new CustomShape(0, 0, 0, color, points);
+    }
+
+    /**
+     * Parses the points portion of a serialized custom shape.
+     *
+     * @param pointData the point data after the "Points:" marker
+     * @return the parsed points
+     */
+    private ArrayList<Point> parseCustomPoints(String pointData) {
+        ArrayList<Point> points = new ArrayList<>();
+        if (pointData.isEmpty()) {
+            return points;
+        }
+
+        String[] pointParts = pointData.split("\\|");
+        for (String pointPart : pointParts) {
+            String trimmedPoint = pointPart.trim();
+            if (trimmedPoint.startsWith("(")) {
+                trimmedPoint = trimmedPoint.substring(1);
+            }
+            if (trimmedPoint.endsWith(")")) {
+                trimmedPoint = trimmedPoint.substring(0, trimmedPoint.length() - 1);
+            }
+
+            String[] coordinates = trimmedPoint.split(",");
+            if (coordinates.length != 2) {
+                continue;
+            }
+
+            try {
+                double x = Double.parseDouble(coordinates[0].trim());
+                double y = Double.parseDouble(coordinates[1].trim());
+                points.add(new Point(x, y));
+            } catch (NumberFormatException e) {
+                System.out.println("Skipping invalid custom shape point: " + trimmedPoint);
+            }
+        }
+
+        return points;
     }
 
     /**

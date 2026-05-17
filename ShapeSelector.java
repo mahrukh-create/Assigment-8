@@ -20,23 +20,25 @@ public class ShapeSelector {
     private static final Scanner INPUT = new Scanner(System.in);
     private static final double MIN_SIZE = 10;
     private static final double MAX_SIZE = 100;
+    private static final String CANCEL_TOKEN = "cancel";
     private static final String[] MAIN_MENU_OPTIONS = {
             "Change Size (10-100)",
             "Change Color",
             "Create custom shape",
             "Save/Load/Delete Creations",
-            "Exit Menu" };
+        "Cancel" };
     private static final String[] FILE_MENU_OPTIONS = {
             "Save current creation",
             "Load creation",
             "Delete creation",
-            "Exit Menu" };
+        "Cancel" };
     private static final String[] KEYBIND_LINES = {
             "r = red, b = blue, g = green",
             "c = open menu, u = undo last point",
             "1 = circle, 2 = square, 3 = triangle",
             "Equals (=) = increase size, Minus (-) = decrease size",
-            "Left-click to place shape, Enter to finalize custom shape, Escape to cancel custom shape" };
+            "Left-click to place shape, Enter to finalize custom shape, x to cancel custom shape",
+            "Backspace = clear canvas, Escape = close app" };
     private static final String[] AVAILABLE_COLORS = { "red", "blue", "green" };
 
     private static String selected = "circle";
@@ -110,6 +112,30 @@ public class ShapeSelector {
     }
 
     /**
+     * Cancels the current custom shape creation and removes any preview points.
+     */
+    private void cancelCustomShape() {
+        creatingCustomShape = false;
+        customShapePoints.clear();
+        for (int i = tempPoints.size(); i > 0; i--) {
+            tempPoints.get(i - 1).clear();
+            tempPoints.remove(i - 1);
+        }
+    }
+
+    /**
+     * Clears all drawn shapes and any in-progress custom shape preview.
+     */
+    private void clearCanvas() {
+        for (TurtleDesigner shape : shapes) {
+            shape.clear();
+        }
+        shapes.clear();
+        cancelCustomShape();
+        canUndo = true;
+    }
+
+    /**
      * Prints a numbered menu from a shared option list.
      *
      * @param title           the menu title
@@ -158,7 +184,11 @@ public class ShapeSelector {
      */
     private String promptText(String prompt) {
         System.out.print(prompt);
-        return INPUT.nextLine().trim();
+        String text = INPUT.nextLine().trim();
+        if (CANCEL_TOKEN.equalsIgnoreCase(text)) {
+            return null;
+        }
+        return text;
     }
 
     /**
@@ -169,10 +199,14 @@ public class ShapeSelector {
      * @param max    the maximum allowed value
      * @return the validated numeric value
      */
-    private double promptDouble(String prompt, double min, double max) {
+    private Double promptDouble(String prompt, double min, double max) {
         while (true) {
             try {
-                double value = Double.parseDouble(promptText(prompt));
+                String text = promptText(prompt + " (type 'cancel' to return): ");
+                if (text == null) {
+                    return null;
+                }
+                double value = Double.parseDouble(text);
                 if (value >= min && value <= max) {
                     return value;
                 }
@@ -191,10 +225,14 @@ public class ShapeSelector {
      * @param max    the maximum allowed value
      * @return the validated integer value
      */
-    private int promptInt(String prompt, int min, int max) {
+    private Integer promptInt(String prompt, int min, int max) {
         while (true) {
             try {
-                int value = Integer.parseInt(promptText(prompt));
+                String text = promptText(prompt + " (type 'cancel' to return): ");
+                if (text == null) {
+                    return null;
+                }
+                int value = Integer.parseInt(text);
                 if (value >= min && value <= max) {
                     return value;
                 }
@@ -213,7 +251,12 @@ public class ShapeSelector {
      */
     private String promptColor(String prompt) {
         while (true) {
-            String newColor = promptText(prompt).toLowerCase();
+            String text = promptText(prompt + " (type 'cancel' to return): ");
+            if (text == null) {
+                return null;
+            }
+
+            String newColor = text.toLowerCase();
             for (String allowedColor : AVAILABLE_COLORS) {
                 if (allowedColor.equals(newColor)) {
                     return newColor;
@@ -241,7 +284,10 @@ public class ShapeSelector {
             System.out.println((i + 1) + ". " + fileNames.get(i));
         }
 
-        int fileChoice = promptInt(prompt, 1, fileNames.size());
+        Integer fileChoice = promptInt(prompt, 1, fileNames.size());
+        if (fileChoice == null) {
+            return null;
+        }
         return fileNames.get(fileChoice - 1);
     }
 
@@ -289,6 +335,18 @@ public class ShapeSelector {
 
         if (keysUp.getOrDefault("u", false)) {
             reset();
+        }
+
+        if (keysDown.getOrDefault("escape", false)) {
+            System.exit(0);
+        }
+
+        if (keysDown.getOrDefault("backspace", false)) {
+            clearCanvas();
+            clearConsole();
+            System.out.println("Canvas cleared.");
+            getStatus();
+            return;
         }
 
         if (awaitingInput) {
@@ -366,6 +424,16 @@ public class ShapeSelector {
             openMainMenu();
             return;
         }
+        if (keysDown.getOrDefault("x", false)) {
+            if (creatingCustomShape) {
+                cancelCustomShape();
+                clearConsole();
+                System.out.println("Custom shape canceled.");
+                getStatus();
+                return;
+            }
+        }
+
         if (keysDown.getOrDefault("enter", false)) {
             if (creatingCustomShape) {
                 if (customShapePoints.size() >= 2) {
@@ -377,20 +445,9 @@ public class ShapeSelector {
                     System.out.println("Custom shape requires at least 2 points. Shape creation cancelled.");
                 }
 
-                creatingCustomShape = false;
-                customShapePoints.clear();
-                for (int i = tempPoints.size(); i > 0; i--) {
-                    tempPoints.get(i - 1).clear();
-                    tempPoints.remove(i - 1);
-                }
+                cancelCustomShape();
             }
 
-            clearConsole();
-            getStatus();
-        }
-        if (keysDown.getOrDefault("escape", false)) {
-            creatingCustomShape = false;
-            customShapePoints.clear();
             clearConsole();
             getStatus();
         }
@@ -418,12 +475,24 @@ public class ShapeSelector {
     private void handleMainMenuChoice(int choice) {
         switch (choice) {
             case 1:
-                defaultSize = promptDouble("Enter new size (10-100): ", MIN_SIZE, MAX_SIZE);
+                Double newSize = promptDouble("Enter new size (10-100): ", MIN_SIZE, MAX_SIZE);
+                if (newSize == null) {
+                    System.out.println("Size change canceled.");
+                    closeMenus();
+                    return;
+                }
+                defaultSize = newSize;
                 System.out.println("Size changed to: " + defaultSize);
                 closeMenus();
                 return;
             case 2:
-                color = promptColor("Enter new color: ");
+                String newColor = promptColor("Enter new color: ");
+                if (newColor == null) {
+                    System.out.println("Color change canceled.");
+                    closeMenus();
+                    return;
+                }
+                color = newColor;
                 System.out.println("Color changed to: " + color);
                 closeMenus();
                 return;
@@ -452,7 +521,13 @@ public class ShapeSelector {
 
         switch (choice) {
             case 1:
-                fileIO.saveCreation(promptText("Enter a name for the creation (eg: 'Creation 1'): "), shapes);
+                String creationName = promptText("Enter a name for the creation (eg: 'Creation 1') or type 'cancel': ");
+                if (creationName == null) {
+                    System.out.println("Save canceled.");
+                    closeMenus();
+                    return;
+                }
+                fileIO.saveCreation(creationName, shapes);
                 closeMenus();
                 return;
             case 2:
@@ -460,6 +535,7 @@ public class ShapeSelector {
                 ArrayList<String> fileNames = fileIO.getSavedCreations();
                 String fileToLoad = pickCreation(fileNames, "Enter the number of the creation you want to load: ");
                 if (fileToLoad == null) {
+                    System.out.println("Load canceled.");
                     closeMenus();
                     return;
                 }
@@ -482,6 +558,7 @@ public class ShapeSelector {
                 String fileToDelete = pickCreation(fileIO.getSavedCreations(),
                         "Enter the number of the creation you want to delete: ");
                 if (fileToDelete == null) {
+                    System.out.println("Delete canceled.");
                     closeMenus();
                     return;
                 }
@@ -554,6 +631,7 @@ public class ShapeSelector {
         }
         if (creatingCustomShape) {
             System.out.println("Creating custom shape: " + customShapePoints.size() + " points defined");
+            System.out.println("Press Enter to finalize, x to cancel, or Escape to close the app.");
             return;
         }
 

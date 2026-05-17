@@ -34,11 +34,20 @@ public class CustomShape extends TurtleDesigner {
     /**
      * {@inheritDoc}
      *
-     * @return a single line of text with all of the values of the array defining the custom shape
+     * @return a single line of text that can be saved and loaded by FileIO
      */
     @Override
     public String toString() {
-        return "Array of points: " + getPoints().toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("Custom: Shape color: ").append(getColor()).append(", Points: ");
+        for (int i = 0; i < points.size(); i++) {
+            Point point = points.get(i);
+            builder.append("(").append(point.getX()).append(",").append(point.getY()).append(")");
+            if (i < points.size() - 1) {
+                builder.append("|");
+            }
+        }
+        return builder.toString();
     }
 
     /**
